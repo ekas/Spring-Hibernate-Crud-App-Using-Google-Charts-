@@ -1,8 +1,10 @@
-    <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>  
+    <%@page import="org.springframework.security.crypto.codec.Base64"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>  
     <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
   <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
       pageEncoding="ISO-8859-1"%>
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -36,6 +38,10 @@
         }
         #table-cust,.alert-box {
             display: none;
+        }
+        #ItemPreview{
+        	height: 100px;
+        	width: 100px;
         }
     </style>
   <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
@@ -229,12 +235,14 @@ function selectHandler() {
 				
                       <table id= "tab" class="table table-striped">
                 <tr>
+                	<th>Select to Update</th>
                   	<th>Employee ID</th>
                 	<th>Employee Name</th>
                 	<th>Employee Designation</th>
+                	<th>Employee Image</th><!--  
                 	<sec:authorize access="hasRole('ROLE_ADMIN')">
                 		<th>Operations</th>
-                	</sec:authorize>
+                	</sec:authorize>-->
                 </tr>               
                 <c:forEach var="empDeptClick" items="${empDeptClick}"> 
                   <tr>
@@ -247,12 +255,14 @@ function selectHandler() {
                     <td>${empDeptClick.empid}</td>
                     <td>${empDeptClick.empname}</td>
                     <td>${empDeptClick.empdesig}</td>
+                   	<!-- <td><img id="ItemPreview" src="data:image/jpg;base64,${empDeptClick.empimgstr}"/>-->
+                    </td><!-- 
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                     	<td>                     	
                     		<a href="http://localhost:8080/02DataChartHibernate/delete/${empDeptClick.empid}"><input class='custom-button btn btn-default' id='button' type='submit' name='btn' value='Delete'></a>
                     		<a href="http://localhost:8080/02DataChartHibernate/update/${empDeptClick.empid}"><input class='custom-button btn btn-default' id='button' type='submit' name='btn' value='Update'></a>                   
                     	</td>
-                    </sec:authorize>
+                    </sec:authorize> -->
                   </tr>
                   
               </c:forEach>
@@ -285,6 +295,6 @@ function selectHandler() {
 	</nav>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa' crossorigin='anonymous'></script> 
-</body>
+    
 </html>
   

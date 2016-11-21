@@ -1,5 +1,6 @@
 package com.maven.Dao;
 
+import java.sql.Blob;
 import java.util.List;
 
 import com.maven.Bean.Emp;
@@ -13,6 +14,7 @@ public interface EmpDaoInter {
 	public List<Emp> getByEmpOrder(int deptid, String orderby, String ordertype);
 	public String deleteEmp(int empid);
 	public List<Emp> updateEmp(int deptid,int empid);
-	public String addEmp(int empid, String empname, String empdesig, int deptid);
+	public String addEmp(int empid, String empname, String empdesig, int deptid, byte[] blob, String encoded);
 	public String updateEmp2(int empid, String empname, String empdesig, int deptid);
+	public byte[] getImage(int empid);
 }

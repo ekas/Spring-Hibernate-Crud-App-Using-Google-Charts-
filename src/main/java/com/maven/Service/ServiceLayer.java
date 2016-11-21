@@ -1,8 +1,11 @@
 package com.maven.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.sql.Blob;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,9 +76,26 @@ public class ServiceLayer implements ServiceLayerInter{
 	}
 	
 	@Override
-	public String addEmp(int empid, String empname, String empdesig, int deptid) {
-		msg = dao.addEmp(empid,empname,empdesig,deptid);
+	public String addEmp(int empid, String empname, String empdesig, int deptid,byte[] blob) {
+		
+		byte[] encodedBytes = Base64.encode(blob);
+		String encoded = null;
+		try {
+			encoded = new String(encodedBytes, "UTF-8");
+			//System.out.println("Controller encodedBytes:"+encoded);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		msg = dao.addEmp(empid,empname,empdesig,deptid,blob,encoded);
 	return msg;
+	}
+
+	@Override
+	public byte[] getImage(int empid) {
+		byte[] list = dao.getImage(empid);
+	return list;
 	}
 
 	

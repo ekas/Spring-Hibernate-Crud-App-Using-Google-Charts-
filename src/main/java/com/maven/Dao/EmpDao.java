@@ -1,11 +1,20 @@
 package com.maven.Dao;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.persistence.Query;
 
 import org.hibernate.SessionFactory;
@@ -56,6 +65,25 @@ public class EmpDao implements EmpDaoInter{
 		}*/
 	return list;
 	}	
+	
+	public byte[] getImage(int deptid) {
+		List<Emp> list = new ArrayList<Emp>();
+		byte[] row1 = null;
+		String sql_query = "Select empimg from Emp where deptid="+deptid+" and empid = 17";
+		org.hibernate.Query query = this.sessionFactory.getCurrentSession().createQuery(sql_query);
+		for(Iterator it = query.iterate();it.hasNext();){
+			byte[] row = (byte[]) it.next();
+			Emp emp = new Emp();
+			System.out.println("Dao Row code:"+ row);
+			//emp.setEmpimg(row);
+			 row1 = row;
+			//System.out.println(noemp.getNoofemp());
+			//System.out.println(noemp.getDeptid());
+			//list.add(emp);
+		}
+		//System.out.println("Dao img code:"+ emp.getEmpimg());
+	return row1;
+	}
 	
 	//Chart onclick Department Specific DATA
 	@Override
@@ -126,17 +154,46 @@ public class EmpDao implements EmpDaoInter{
 
 	//Add
 	@Override
-	public String addEmp(int empid, String empname, String empdesig, int deptid) {
+	public String addEmp(int empid, String empname, String empdesig, int deptid,byte[] blob, String encoded) {
+		System.out.println("Dao : "+encoded);
 		String sql_getSpec = "from Emp where empid = "+empid;
 		List<Emp> list1= this.sessionFactory.getCurrentSession().createQuery(sql_getSpec).list();
 		if(list1.isEmpty()){
 			emp.setEmpid(empid);
 			emp.setEmpname(empname);
-			emp.setEmpdesig(empdesig);		
+			emp.setEmpdesig(empdesig);
+			emp.setEmpimg(blob);
+			emp.setEmpimgstr(encoded);
 			Dept dept = (Dept) sessionFactory.getCurrentSession().get(Dept.class,deptid);
 			emp.setDept(dept);		
 			sessionFactory.getCurrentSession().persist(emp);
-			msg = "Record with Employee ID: "+ empid +" Successfully Added : 1 ROW Affected";			
+			msg = "Record with Employee ID: "+ empid +" Successfully Added : 1 ROW Affected";
+			
+			/*byte[] blob2 = emp.getEmpimg();
+			try {
+				byte bar[] = blob2.getBytes(1, (int)blob2.length());
+				FileOutputStream fout = new FileOutputStream("C:\\Documents and Settings\\ekas.singh\\Desktop\\"+empid+".jpg");
+				fout.write(bar);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			/*		
+
+			try {
+				InputStream in = new ByteArrayInputStream(bFile);
+				BufferedImage bImageFromConvert = ImageIO.read(in);
+				ImageIO.write(bImageFromConvert, "jpg", new File("C:\\Documents and Settings\\ekas.singh\\Desktop\\Data\\Sunset2.jpg"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 		}
 		else{
 			msg = "Record with Employee ID: "+ empid +" Already exists";

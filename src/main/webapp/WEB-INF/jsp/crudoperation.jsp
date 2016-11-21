@@ -93,7 +93,7 @@
     <div class="container">
         <div class="custom-container2">
             <div class="custom-form">
-                <form:form method="get" action="crud">
+                <form:form method="post" action="crud" enctype="multipart/form-data">
                     <h2>Add Operation</h2>  
                     <div class="form-group">
                         <label>Employee ID*</label>
@@ -110,6 +110,10 @@
                     <div class="form-group">
                         <input type="hidden" class="form-control" id="deptid" placeholder="Enter Department ID" name="deptid" value="${deptid}">
                     </div>
+                    <div class="form-group">
+    					<input type="file" id="empimg" name="empimg2" accept="image/*">
+    					<p class="help-block">Image Should be of Size</p>
+  					</div>
                     <input class='custom-button btn btn-default' id='button1' type='submit' name='btn' value='Add'>
                     
                 </form:form>
@@ -124,7 +128,7 @@
     <div class="container">
         <div class="custom-container2">
             <div class="custom-form">
-            <form:form method="get" action="http://localhost:8080/02DataChartHibernate/crud">
+            <form:form method="post" action="http://localhost:8080/02DataChartHibernate/crud">
             	
                     <h2>Update Operation</h2>
                     <c:forEach var="emplist" items="${emplist}">
@@ -166,7 +170,10 @@
         				alert("All Fields are mandatory");
         				return false;
     				}
-    			
+    				
+    				var fileVal=document.getElementById("empimg");
+    				alert(fileVal);
+    				
     				var regexName = /^[a-zA-Z ]+$/;
     				var regexid = /^[0-9]+$/;
     			

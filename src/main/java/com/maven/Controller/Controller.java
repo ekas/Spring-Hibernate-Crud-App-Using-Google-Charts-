@@ -1,15 +1,17 @@
 package com.maven.Controller;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.sql.Blob;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.maven.Bean.DeptSaveId;
@@ -110,6 +112,22 @@ public class Controller {
 		List<Emp> list2 = sl.getSpecEmpPerDept(deptid);
 		model.addAttribute("empDeptClick",list2);
 		
+		/*
+		byte[] list3 = sl.getImage(deptid);
+		System.out.println("Controller img:"+list3);
+		byte[] encodedBytes = Base64.encode(list3);
+		
+		System.out.println("Controller encodedBytes:"+encodedBytes);
+		String encoded = null;
+		try {
+			encoded = new String(encodedBytes, "UTF-8");
+			//System.out.println("Controller encodedBytes:"+encoded);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("image",encoded);
+		*/
 		/*for(NoEmp i:list){
 			System.out.println("{deptid}" + i.getNoofemp()+":"+i.getDeptid());
 		}
@@ -157,17 +175,35 @@ public class Controller {
 	}
 	
 	//CRUD OPERATIONS
-		@RequestMapping(value = "/crud", method = RequestMethod.GET )
-		public String viewemp6(@RequestParam(value="empid", required=true) int empid ,
+		@RequestMapping(value = "/crud", method = RequestMethod.POST )
+		public String viewemp6(@RequestParam(value="empimg2") MultipartFile empimg,
+				@RequestParam(value="empid", required=true) int empid ,
 				@RequestParam(value="empname", required=true) String empname ,
 				@RequestParam(value="empdesig", required=true) String empdesig ,
 				/*@RequestParam(value="deptid", required=false) int deptid ,*/
-				@RequestParam(value="btn", required = true) String btnname ,Model model){
+				@RequestParam(value="btn", required = true) String btnname,
+				Model model){
 			
 			//ADD Handler
 			if(btnname.equals("Add")){
 				System.out.println("Add: "+empid);
-				msg = sl.addEmp(empid,empname,empdesig,deptSaveId.getDeptid());
+				
+				//File file = new File(empimg);
+				//byte[] bFile = new byte[(int) (empimg).length()];
+				//Blob blob = Hibernate.createBlob(bFile);
+				
+				Blob blob = null;
+				byte[] blob2 = null;
+				String str = null;
+				try {
+					//blob = Hibernate.createBlob(empimg.getInputStream());
+					 blob2 = empimg.getBytes();
+					 //str = new String(blob2, "UTF-8");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				msg = sl.addEmp(empid,empname,empdesig,deptSaveId.getDeptid(),blob2);
 				model.addAttribute("msg",msg);		
 				List<NoEmp> list=sl.getEmpPerDept();
 				model.addAttribute("emplist",list);			
@@ -191,7 +227,17 @@ public class Controller {
 			}
 			return "viewemp2";		
 		}
-	
+	/*
+		//Image Handler
+		@RequestMapping(value = "/showimg/{empid}")
+		public String viewemp10(@PathVariable("empid") int empid, ModelMap model){			
+			byte[] list2 = sl.getImage(empid);
+			System.out.println("Controller img:"+list2);
+			byte[] encodedBytes = Base64.encode(list2);
+			model.addAttribute("image",encodedBytes);
+			return "viewemp2";		
+		}
+		*/
 		//Delete Handler
 		@RequestMapping(value = "/delete/{empid}", method = RequestMethod.GET )
 		public String viewemp7(@PathVariable("empid") int empid, Model model){

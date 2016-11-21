@@ -2,10 +2,9 @@ package com.maven.Bean;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,6 +22,13 @@ public class Emp {
 	@Column(name="empdesig")
 	private String empdesig;
 	
+	@Lob
+	@Column(name="empimgstr")
+	private String empimgstr;
+	
+	@Lob
+	private byte[] empimg;
+
 	@ManyToOne
 	@JoinColumn(name="deptid")
 	private Dept dept;
@@ -31,11 +37,13 @@ public class Emp {
 		super();
 	}
 
-	public Emp(int empid, String empname, String empdesig, Dept dept) {
+	public Emp(int empid, String empname, String empdesig, byte[] empimg, String empimgstr, Dept dept) {
 		super();
 		this.empid = empid;
 		this.empname = empname;
 		this.empdesig = empdesig;
+		this.empimgstr = empimgstr;
+		this.empimg = empimg;
 		this.dept = dept;
 	}
 
@@ -63,11 +71,27 @@ public class Emp {
 		this.empdesig = empdesig;
 	}
 
+	public String getEmpimgstr() {
+		return empimgstr;
+	}
+
+	public void setEmpimgstr(String empimgstr) {
+		this.empimgstr = empimgstr;
+	}
+
+	public byte[] getEmpimg() {
+		return empimg;
+	}
+
+	public void setEmpimg(byte[] empimg) {
+		this.empimg = empimg;
+	}
+
 	public Dept getDept() {
 		return dept;
 	}
 
 	public void setDept(Dept dept) {
 		this.dept = dept;
-	}		
+	}	
 }
