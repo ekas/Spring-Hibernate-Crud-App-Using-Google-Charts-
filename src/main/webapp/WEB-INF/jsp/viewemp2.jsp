@@ -12,6 +12,7 @@
     <title>Chart Page</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u' crossorigin='anonymous'>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <style type='text/css'>
         .custom-container {
             margin: 50px auto 0 auto;
@@ -21,20 +22,20 @@
             box-shadow: 4px 6px 13px -1px rgba(130, 126, 130, 0.64);
             padding: 50px;
         }
-        
         .custom-button {
+    
             margin-right: 10px;
             color: white;
-            background-color: #66afe9;
+            background-color: #8ABBED;
             padding: 8px 20px 8px 20px;
             border-radius: 2px;
-            border: 1px solid #66afe9;
+            border: 1px solid #8ABBED;
         }
         
         .custom-button:hover {
             color: #66afe9;
             background-color: #ffffff;
-            border: 1px solid #66afe9;
+            border: 1px solid #8ABBED;
         }
         #table-cust,.alert-box {
             display: none;
@@ -47,59 +48,63 @@
   <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa' crossorigin='anonymous'></script>    
  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script>
-  google.charts.load('current', {packages: ['corechart', 'bar']});
-  google.charts.setOnLoadCallback(drawBasic);
+  <script type="text/javascript">
+		google.charts.load('current', {'packages' : [ 'bar' ]});
+		google.charts.setOnLoadCallback(drawStuff);
 
-  function drawBasic() {
-    
-      var data = google.visualization.arrayToDataTable([
-            ['Department ID', 'Number of Employees per Department']
-            <c:forEach var="emplist" items="${emplist}">
-              ,['${emplist.deptid}',${emplist.noofemp}]
-            </c:forEach>
-          ]);       
-        
-        var options = {
-          title: 'Number Of Employees',
-          chartArea: {width: '50%'},
-          hAxis: {
-            title: 'Number of Employees',
-            minValue: 0
-          },
-          vAxis: {
-            title: 'Department ID'
-          }
-        };
+		function drawStuff() {
+			var data = new google.visualization.arrayToDataTable([
+						['Department ID','Number of Employees per Department' ]
+						<c:forEach var="emplist" items="${emplist}">
+  							,['${emplist.deptid}',${emplist.noofemp}]
+						</c:forEach>					
+					]);
 
-        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+			var options = {
+				width : 800,
+				height: 400,
+				legend : {
+					position : 'none'
+				},
+				bars : 'horizontal', // Required for Material Bar Charts.
+				axes : {
+					x : {
+						0 : {
+							side : 'top',
+							label : 'Number of Employees per Department'
+						}
+					// Top x-axis.
+					}
+				},
+				bar : {
+					groupWidth : "90%"
+				},
+				colors: ['#8ABBED'],
+				is3D: true
+			};
 
-        chart.draw(data, options);
-// Add our selection handler.
-google.visualization.events.addListener(chart, 'select', selectHandler);
+			var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+			chart.draw(data, options);
+			
+			// Add our selection handler.
+			google.visualization.events.addListener(chart, 'select', selectHandler);
 
-// The selection handler.
-// Loop through all items in the selection and concatenate
-// a single message from all of them.
-function selectHandler() {
-  var selection = chart.getSelection();
-  var message = '';
-  for (var i = 0; i < selection.length; i++) {
-    var item = selection[i];
-    if (item.row != null && item.column != null) {
-      //var str = data.getFormattedValue(item.row, item.column);
-      //message += 'Department ID:' + item.row + '\n' + 'Number of Employees' + str  + '\n';
-      
-      window.location =  item.row+1;
-      //$('#table-cust').css('display','block');
-    } 
-  }
-  /*if (message == '') {
-    message = 'nothing';
-  }
-  alert('You selected ' + message);*/
-}
-      }
+			// The selection handler.
+			// Loop through all items in the selection and concatenate
+			// a single message from all of them.
+			function selectHandler() {
+			  var selection = chart.getSelection();
+			  var message = '';
+			  for (var i = 0; i < selection.length; i++) {
+			    var item = selection[i];
+			    if (item.row != null && item.column != null) {			      
+			     	var str = data.getValue(item.row,0);
+			     	//alert('You selected ' + str);
+			    	window.location =  str;			      
+			    } 
+			  }			  
+			}
+		};
   		
   $(function(){
 	  $("#search1").click(function(){
@@ -174,14 +179,14 @@ function selectHandler() {
 	</nav>
         
         <div class='container'>
-            <div class='custom-container'>
+            <div class='custom-container cus1'>
                 <div class='custom-form'> 
                 	<c:if test="${not empty msg}">
                 		<div class="alert-box alert alert-success" style="display: block;"role="alert">${msg}</div>
 					</c:if>          
                     <form:form method="get" action="back">  
                     <h2>No of Employees</h2>
-                    <div id="chart_div"></div>
+                    <div id="top_x_div" style="width: 900px; height: 500px;"></div>
                     <input class='custom-button btn btn-default' id='button' type='submit' name='btn' value='Back'>
                 </form:form>
             </div>
@@ -207,8 +212,8 @@ function selectHandler() {
             <div class='custom-form'>
               <form:form method="get" action="search">  
                     <h2>Employees Specific to Department</h2> 
-                    <div class="search-div form-group">
-                    	<input type="text" class="form-control" placeholder="search by name" name="searchfield" id="searchfield">
+                    <div class="search-div form-group ui-widget">
+                    	<input type="text" class="form-control autocomplete" placeholder="search by name" name="searchfield" id="searchfield">
                     	<br> 
                     	<input class='custom-button btn btn-default' id='search1' type='submit' name='btn' value='Search1'>
                     
@@ -239,30 +244,30 @@ function selectHandler() {
                   	<th>Employee ID</th>
                 	<th>Employee Name</th>
                 	<th>Employee Designation</th>
-                	<th>Employee Image</th><!--  
+                	<th>Employee Image</th>
                 	<sec:authorize access="hasRole('ROLE_ADMIN')">
                 		<th>Operations</th>
-                	</sec:authorize>-->
+                	</sec:authorize>
                 </tr>               
                 <c:forEach var="empDeptClick" items="${empDeptClick}"> 
                   <tr>
                   	<td>
                   	<div class="radio">
   						<label>
-    						<input type="radio" name="optionsRadios" id="optionsRadios1" value=${empDeptClick.empid}>  						
+    						<input type="radio" name="optionsRadios" id="optionsRadios1" value=${empDeptClick.empid} required>  						
 						</div>
                   	</td>
                     <td>${empDeptClick.empid}</td>
                     <td>${empDeptClick.empname}</td>
                     <td>${empDeptClick.empdesig}</td>
-                   	<!-- <td><img id="ItemPreview" src="data:image/jpg;base64,${empDeptClick.empimgstr}"/>-->
-                    </td><!-- 
+                   	<td><img id="ItemPreview" class="img-thumbnail"  src="data:image/jpg;base64,${empDeptClick.convertBytesToString()}"/>
+                    </td>
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    	<td>                     	
+                    	<td>                    	
                     		<a href="http://localhost:8080/02DataChartHibernate/delete/${empDeptClick.empid}"><input class='custom-button btn btn-default' id='button' type='submit' name='btn' value='Delete'></a>
-                    		<a href="http://localhost:8080/02DataChartHibernate/update/${empDeptClick.empid}"><input class='custom-button btn btn-default' id='button' type='submit' name='btn' value='Update'></a>                   
+                    	<!--<a href="http://localhost:8080/02DataChartHibernate/update/${empDeptClick.empid}"><input class='custom-button btn btn-default' id='button' type='submit' name='btn' value='Update'></a>  -->                  
                     	</td>
-                    </sec:authorize> -->
+                    </sec:authorize>
                   </tr>
                   
               </c:forEach>
@@ -295,6 +300,20 @@ function selectHandler() {
 	</nav>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa' crossorigin='anonymous'></script> 
-    
+    <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script>-->
+      <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+      <!-- Javascript -->
+      <script>
+         $(function() {
+            var availableTutorials = [
+			<c:forEach var="empDeptClick" items="${empDeptClick}"> 
+               "${empDeptClick.empname}",
+            </c:forEach>
+            ];
+            $( ".autocomplete" ).autocomplete({
+               source: availableTutorials
+            });
+         });
+      </script>
 </html>
   

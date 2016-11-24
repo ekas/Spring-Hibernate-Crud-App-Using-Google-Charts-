@@ -70,25 +70,15 @@ public class ServiceLayer implements ServiceLayerInter{
 	}
 
 	@Override
-	public String updateEmp2(int empid, String empname, String empdesig,int deptid) {
-		msg = dao.updateEmp2(empid,empname,empdesig,deptid);
+	public String updateEmp2(int empid, String empname, String empdesig,int deptid, byte[] blob) {
+		msg = dao.updateEmp2(empid,empname,empdesig,deptid,blob);
 	return msg;
 	}
 	
 	@Override
 	public String addEmp(int empid, String empname, String empdesig, int deptid,byte[] blob) {
 		
-		byte[] encodedBytes = Base64.encode(blob);
-		String encoded = null;
-		try {
-			encoded = new String(encodedBytes, "UTF-8");
-			//System.out.println("Controller encodedBytes:"+encoded);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		msg = dao.addEmp(empid,empname,empdesig,deptid,blob,encoded);
+		msg = dao.addEmp(empid,empname,empdesig,deptid,blob);
 	return msg;
 	}
 

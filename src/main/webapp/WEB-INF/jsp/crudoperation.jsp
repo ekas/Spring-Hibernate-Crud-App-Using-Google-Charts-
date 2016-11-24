@@ -42,6 +42,10 @@
             background-color: #ffffff;
             border: 1px solid #66afe9;
         }
+        #ItemPreview{
+        	height: 100px;
+        	width: 100px;
+        }
     </style>    
 </head>
 <body>
@@ -128,7 +132,7 @@
     <div class="container">
         <div class="custom-container2">
             <div class="custom-form">
-            <form:form method="post" action="http://localhost:8080/02DataChartHibernate/crud">
+            <form:form method="post" action="http://localhost:8080/02DataChartHibernate/crud" enctype="multipart/form-data">
             	
                     <h2>Update Operation</h2>
                     <c:forEach var="emplist" items="${emplist}">
@@ -143,7 +147,13 @@
                         <label>Employee Designation*</label>
                         <input type="text" class="form-control" id="empdesig2" placeholder="Enter Employee Designation" name="empdesig" value="${emplist.empdesig}">
                     </div>
+                    <img id="ItemPreview" class="img-thumbnail" src="data:image/jpg;base64,${emplist.convertBytesToString()}"/>
                     </c:forEach>
+                    <div class="form-group">
+                    	<label>Update Your Profile pic*</label>
+    					<input type="file" id="empimg" name="empimg2" accept="image/*">
+    					<p class="help-block">Image Should be of Size</p>
+  					</div>
                     <div class="form-group">
                         <input type="hidden" class="form-control" id="deptid" placeholder="Enter Department ID" name="deptid" value="${deptid}">
                     </div>
