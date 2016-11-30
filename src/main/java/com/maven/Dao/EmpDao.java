@@ -129,13 +129,14 @@ public class EmpDao implements EmpDaoInter{
 	
 	//Update Fill Back to DB
 	@Override
-	public String updateEmp2(int empid, String empname, String empdesig,int deptid) {
+	public String updateEmp2(int empid, String empname, String empdesig,int deptid, byte[] blob) {
 	
 		emp.setEmpid(empid);		
 		Dept dept = (Dept) sessionFactory.getCurrentSession().get(Dept.class,deptid);
 		emp.setDept(dept);
 		emp.setEmpname(empname);
 		emp.setEmpdesig(empdesig);
+		emp.setEmpimg(blob);
 		sessionFactory.getCurrentSession().update(emp);	
 		
 	/*String sql_getValue = "UPDATE Emp set empname = :empname, empdesig = :empdesig  WHERE id = :empid";
@@ -154,8 +155,7 @@ public class EmpDao implements EmpDaoInter{
 
 	//Add
 	@Override
-	public String addEmp(int empid, String empname, String empdesig, int deptid,byte[] blob, String encoded) {
-		System.out.println("Dao : "+encoded);
+	public String addEmp(int empid, String empname, String empdesig, int deptid,byte[] blob) {		
 		String sql_getSpec = "from Emp where empid = "+empid;
 		List<Emp> list1= this.sessionFactory.getCurrentSession().createQuery(sql_getSpec).list();
 		if(list1.isEmpty()){
@@ -163,7 +163,6 @@ public class EmpDao implements EmpDaoInter{
 			emp.setEmpname(empname);
 			emp.setEmpdesig(empdesig);
 			emp.setEmpimg(blob);
-			emp.setEmpimgstr(encoded);
 			Dept dept = (Dept) sessionFactory.getCurrentSession().get(Dept.class,deptid);
 			emp.setDept(dept);		
 			sessionFactory.getCurrentSession().persist(emp);
@@ -206,8 +205,15 @@ public class EmpDao implements EmpDaoInter{
 		int result = query.executeUpdate();
 		System.out.println("Rows affected: " + result);*/		
 		
-		
+			
 	return msg;
+	}
+
+	@Override
+	public List<String> getNames(String chars) {
+		String sql_query = "Select empname from Emp where empname like '%"+chars+"%'";
+		List<String> list= this.sessionFactory.getCurrentSession().createQuery(sql_query).list();		
+	return list;
 	}
 
 	

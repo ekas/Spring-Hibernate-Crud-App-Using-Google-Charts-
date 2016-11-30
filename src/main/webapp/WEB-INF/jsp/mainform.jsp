@@ -99,10 +99,50 @@
                        </table>  
                     </form:form>
                     <br>
+                    <form:form method="post" action="showChart2">  
+                        <table>
+                            <tr>  
+                                <td><input class="custom-button" type="submit" value="Show Chart v2"/></td>  
+                            </tr>  
+                       </table>  
+                    </form:form>
+                    <br>
                     <form:form method="post" action="showTable">  
                         <table>
                             <tr>  
                                 <td><input class="custom-button" type="submit" value="Show Chart Table"/></td>  
+                            </tr>  
+                        </table>  
+                    </form:form>
+                    <br>
+                    <form:form method="post" action="showCarousel1">  
+                        <table>
+                            <tr>  
+                                <td><input class="custom-button" type="submit" value="Show Carousel v1"/></td>  
+                            </tr>  
+                        </table>  
+                    </form:form>
+                    <br>
+                    <form:form method="post" action="showCarousel2">  
+                        <table>
+                            <tr>  
+                                <td><input class="custom-button" type="submit" value="Show Carousel v2"/></td>  
+                            </tr>  
+                        </table>  
+                    </form:form>
+                    <br>
+                    <form:form method="post" action="showCarousel3">  
+                        <table>
+                            <tr>  
+                                <td><input class="custom-button" type="submit" value="Show Carousel v3"/></td>  
+                            </tr>  
+                        </table>  
+                    </form:form>
+                    <br>
+                    <form:form method="post" action="showajax">  
+                        <table>
+                            <tr>  
+                                <td><input class="custom-button" type="submit" value="Show AJAX page"/></td>  
                             </tr>  
                         </table>  
                     </form:form>
