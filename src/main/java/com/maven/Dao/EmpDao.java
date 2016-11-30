@@ -129,14 +129,13 @@ public class EmpDao implements EmpDaoInter{
 	
 	//Update Fill Back to DB
 	@Override
-	public String updateEmp2(int empid, String empname, String empdesig,int deptid, byte[] blob) {
+	public String updateEmp2(int empid, String empname, String empdesig,int deptid) {
 	
 		emp.setEmpid(empid);		
 		Dept dept = (Dept) sessionFactory.getCurrentSession().get(Dept.class,deptid);
 		emp.setDept(dept);
 		emp.setEmpname(empname);
 		emp.setEmpdesig(empdesig);
-		emp.setEmpimg(blob);
 		sessionFactory.getCurrentSession().update(emp);	
 		
 	/*String sql_getValue = "UPDATE Emp set empname = :empname, empdesig = :empdesig  WHERE id = :empid";
@@ -155,7 +154,8 @@ public class EmpDao implements EmpDaoInter{
 
 	//Add
 	@Override
-	public String addEmp(int empid, String empname, String empdesig, int deptid,byte[] blob) {		
+	public String addEmp(int empid, String empname, String empdesig, int deptid,byte[] blob, String encoded) {
+		System.out.println("Dao : "+encoded);
 		String sql_getSpec = "from Emp where empid = "+empid;
 		List<Emp> list1= this.sessionFactory.getCurrentSession().createQuery(sql_getSpec).list();
 		if(list1.isEmpty()){
@@ -163,6 +163,7 @@ public class EmpDao implements EmpDaoInter{
 			emp.setEmpname(empname);
 			emp.setEmpdesig(empdesig);
 			emp.setEmpimg(blob);
+			emp.setEmpimgstr(encoded);
 			Dept dept = (Dept) sessionFactory.getCurrentSession().get(Dept.class,deptid);
 			emp.setDept(dept);		
 			sessionFactory.getCurrentSession().persist(emp);

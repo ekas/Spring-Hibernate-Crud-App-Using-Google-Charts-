@@ -13,6 +13,6 @@ public interface ServiceLayerInter {
 	public String deleteEmp(int empid);
 	public List<Emp> updateEmp(int deptid,int empid);
 	public String addEmp(int empid, String empname, String empdesig, int deptid,byte[] blob);
-	public String updateEmp2(int empid, String empname, String empdesig, int i,byte[] blob);
+	public String updateEmp2(int empid, String empname, String empdesig, int i);
 	public byte[] getImage(int empid);
 }
