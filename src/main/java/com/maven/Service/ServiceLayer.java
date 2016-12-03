@@ -94,5 +94,11 @@ public class ServiceLayer implements ServiceLayerInter{
 		return list;
 	}
 
+	@Override
+	public List<String> getNamesPerDept(String chars, int deptid) {
+		List<String> list = dao.getNamesPerDept(chars,deptid);
+		return list;
+	}
+
 	
 }

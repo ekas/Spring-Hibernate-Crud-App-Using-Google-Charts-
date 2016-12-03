@@ -112,10 +112,23 @@ public class Controller {
 	// Show Ajax values
 	@RequestMapping(value = "/getMatchedNames", method = RequestMethod.GET)
 	public @ResponseBody
-	List<String> viewemp12(@RequestParam(value = "term") String term) {
-		List<String> list = sl.getNames(term);
+	List<String> viewemp12(@RequestParam(value = "term") String chars) {
+		String chars2 = chars.toLowerCase();
+		List<String> list = sl.getNames(chars2);
 		//String json = new Gson().toJson(list);
 		//System.out.println(json);
+		System.out.println(list);
+		return list;
+	}
+	
+	// Show Ajax values
+	@RequestMapping(value = "/getMatchedNamesPerDept", method = RequestMethod.GET)
+	public @ResponseBody
+	List<String> viewemp13(@RequestParam(value = "chars") String chars) {
+		String chars2 = chars.toLowerCase();
+		List<String> list = sl.getNamesPerDept(chars2,deptSaveId.getDeptid());
+		// String json = new Gson().toJson(list);
+		// System.out.println(json);
 		System.out.println(list);
 		return list;
 	}

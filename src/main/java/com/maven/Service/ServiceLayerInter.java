@@ -16,4 +16,5 @@ public interface ServiceLayerInter {
 	public String updateEmp2(int empid, String empname, String empdesig, int i,byte[] blob);
 	public byte[] getImage(int empid);
 	public List<String> getNames(String chars);
+	public List<String> getNamesPerDept(String chars, int deptid);
 }

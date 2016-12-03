@@ -211,8 +211,16 @@ public class EmpDao implements EmpDaoInter{
 
 	@Override
 	public List<String> getNames(String chars) {
-		String sql_query = "Select empname from Emp where empname like '%"+chars+"%'";
+		String sql_query = "Select empname from Emp where lower(empname) like('%"+chars+"%') order by(empname)";
 		List<String> list= this.sessionFactory.getCurrentSession().createQuery(sql_query).list();		
+	return list;
+	}
+
+	@Override
+	public List<String> getNamesPerDept(String chars, int deptid) {
+		String sql_getName = "Select empname from Emp where deptid = "+deptid+" and lower(empname) like('%"+chars+"%')order by(empname)";
+		
+		List<String> list= this.sessionFactory.getCurrentSession().createQuery(sql_getName).list();		
 	return list;
 	}
 

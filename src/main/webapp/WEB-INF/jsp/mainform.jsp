@@ -114,6 +114,7 @@
                             </tr>  
                         </table>  
                     </form:form>
+                    <!-- 
                     <br>
                     <form:form method="post" action="showCarousel1">  
                         <table>
@@ -121,7 +122,7 @@
                                 <td><input class="custom-button" type="submit" value="Show Carousel v1"/></td>  
                             </tr>  
                         </table>  
-                    </form:form>
+                    </form:form>-->
                     <br>
                     <form:form method="post" action="showCarousel2">  
                         <table>
@@ -130,6 +131,7 @@
                             </tr>  
                         </table>  
                     </form:form>
+                    <!-- 
                     <br>
                     <form:form method="post" action="showCarousel3">  
                         <table>
@@ -137,7 +139,7 @@
                                 <td><input class="custom-button" type="submit" value="Show Carousel v3"/></td>  
                             </tr>  
                         </table>  
-                    </form:form>
+                    </form:form>-->
                     <br>
                     <form:form method="post" action="showajax">  
                         <table>
